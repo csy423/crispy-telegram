@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- 参数 -->
+  <arg name="paused"          default="false"/>
+  <arg name="use_sim_time"    default="true"/>
+  <arg name="gui"             default="true"/>
+  <arg name="headless"        default="false"/>
+  <arg name="debug"           default="false"/>
+  <arg name="x"               default="0.0"/>
+  <arg name="y"               default="0.0"/>
+  <arg name="z"               default="0.15"/>
+
+  <!-- 启动 Gazebo 空世界 -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="debug"         value="$(arg debug)"/>
+    <arg name="gui"           value="$(arg gui)"/>
+    <arg name="paused"        value="$(arg paused)"/>
+    <arg name="use_sim_time"  value="$(arg use_sim_time)"/>
+    <arg name="headless"      value="$(arg headless)"/>
+  </include>
+
+  <!-- 加载 xacro 模型 -->
+  <param name="robot_description"
+         command="$(find xacro)/xacro $(find csy_car_description)/urdf/csy_car.xacro"/>
+
+  <!-- 发布机器人状态 -->
+  <node name="robot_state_publisher"
+        pkg="robot_state_publisher"
+        type="robot_state_publisher"
+        output="screen"/>
+
+  <!-- 在 Gazebo 中生成小车 -->
+  <node name="spawn_csy_car"
+        pkg="gazebo_ros"
+        type="spawn_model"
+        args="-param robot_description -urdf -model csy_car -x $(arg x) -y $(arg y) -z $(arg z)"
+        output="screen"/>
+</launch>

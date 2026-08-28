@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- 键盘控制节点，可通过参数调整速度 -->
+  <node name="keyboard_teleop"
+        pkg="csy_car_description"
+        type="keyboard_teleop"
+        output="screen">
+    <param name="linear_speed"  value="0.5"/>   <!-- 线速度 m/s -->
+    <param name="angular_speed" value="1.0"/>   <!-- 角速度 rad/s -->
+  </node>
+</launch>
